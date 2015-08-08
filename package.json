@@ -1,0 +1,30 @@
+{
+  "name": "react-tables",
+  "version": "1.0.0",
+  "description": "Other table ",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepublish": "babel ./src --out-dir dist-modules",
+    "lint": "eslint ./*.js && eslint ./src"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/archr/react-tables.git"
+  },
+  "keywords": [
+    "table",
+    "react",
+    "bootstrap"
+  ],
+  "author": "Antonio Sandoval",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/archr/react-tables/issues"
+  },
+  "homepage": "https://github.com/archr/react-tables#readme",
+  "devDependencies": {
+    "babel": "^5.8.21",
+    "react": "^0.13.3"
+  }
+}
