@@ -8,7 +8,6 @@ function noop() {}
 export default class Table extends React.Component {
   static propTypes = {
     columns: React.PropTypes.array,
-    ref: React.PropTypes.string,
     pageNumber: React.PropTypes.number,
     pageSize: React.PropTypes.number,
     classes: React.PropTypes.string,
@@ -23,11 +22,11 @@ export default class Table extends React.Component {
     fixedHead: React.PropTypes.bool,
     totalRows: React.PropTypes.number,
     pageSize: React.PropTypes.number,
-    fetch: React.PropTypes.func
+    fetch: React.PropTypes.func,
+    classes: React.PropTypes.string
   }
 
   static defaultProps = {
-    ref: 'table',
     pageNumber: 1,
     pageSize: 10,
     totalRows: 0,
@@ -45,7 +44,8 @@ export default class Table extends React.Component {
       fixedHead: this.props.fixedHead,
       totalRows: this.state.totalRows,
       pageSize: this.props.pageSize,
-      fetch: this.fetch
+      fetch: this.fetch,
+      classes: this.props.classes
     };
 
     return context;
@@ -57,7 +57,11 @@ export default class Table extends React.Component {
     this.state = {
       rows: [],
       loading: true,
-      totalRows: props.totalRows
+      totalRows: props.totalRows,
+      dimentions: {
+        height: '100%',
+        width: '100%'
+      }
     };
 
     this.fetch = this.fetch.bind(this);
@@ -66,6 +70,10 @@ export default class Table extends React.Component {
 
   componentDidMount() {
     this.fetch();
+
+    //let el = React.findDOMNode(this.refs._table);
+    //console.log(el.parentElement.clientHeight);
+
   }
 
   fetch(params={}) {
@@ -94,11 +102,8 @@ export default class Table extends React.Component {
 
     return (
       <div>
-        <table className={classes}>
-          <TableHead/>
-          <TableBody/>
-        </table>
-
+        <TableHead/>
+        <TableBody/>
         <Pagination/>
       </div>
     );

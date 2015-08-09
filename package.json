@@ -1,7 +1,7 @@
 {
   "name": "react-tables",
   "version": "1.0.0",
-  "description": "Other table ",
+  "description": "Another react-table",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
