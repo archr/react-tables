@@ -24,7 +24,7 @@ var columns = [
   { title: 'Name', field: 'name' },
   { title: 'Info', field: 'information', component: RowInformation },
   { title: 'Id', field: 'id', formatter: function (value, row) {
-      return '<a href="/user/'+value +'">' + value + </a>
+      return '<a href="/user/'+value +'">' + value + '</a>';
     }
   }
 ];
@@ -81,4 +81,4 @@ React.createClass({
 | Component | Object   | React component             |
 
 ### License
-MI
+MIT 
