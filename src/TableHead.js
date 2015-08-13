@@ -10,15 +10,22 @@ export default class TableHead extends React.Component {
     let { columns } = this.context;
 
     return (
-      <table className={this.context.classes} style={{marginBottom: 0}}>
-        <thead>
-          <tr>
-            {columns.map(({ field, title, classes }) => {
-              return <th key={field} className={classes || ''}>{title}</th>;
-            })}
-          </tr>
-        </thead>
-      </table>
+      <div>
+        <table className={this.context.classes} style={{marginBottom: 0}}>
+          <thead>
+            <tr>
+              {columns.map(({ field, title, classes }) => {
+                let style = {};
+                if (!classes) {
+                  style.width = parseFloat((100 / columns.length)).toFixed(2) + '%';
+                }
+
+                return <th key={field} className={classes || ''} style={style}>{title}</th>;
+              })}
+            </tr>
+          </thead>
+        </table>
+      </div>
     );
   }
 }

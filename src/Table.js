@@ -12,7 +12,9 @@ export default class Table extends React.Component {
     pageSize: React.PropTypes.number,
     classes: React.PropTypes.string,
     getData: React.PropTypes.func,
-    fixedHead: React.PropTypes.bool
+    fixedHead: React.PropTypes.bool,
+    prefix: React.PropTypes.string,
+    pagination: React.PropTypes.bool
   }
 
   static childContextTypes = {
@@ -23,7 +25,9 @@ export default class Table extends React.Component {
     totalRows: React.PropTypes.number,
     pageSize: React.PropTypes.number,
     fetch: React.PropTypes.func,
-    classes: React.PropTypes.string
+    classes: React.PropTypes.string,
+    dimentions: React.PropTypes.object,
+    prefix: React.PropTypes.string
   }
 
   static defaultProps = {
@@ -33,7 +37,9 @@ export default class Table extends React.Component {
     classes: 'table table-hover table-bordered',
     fixedHead: true,
     columns: [],
-    getData: noop
+    getData: noop,
+    prefix: 'react-tables',
+    pagination: React.PropTypes.bool
   }
 
   getChildContext() {
@@ -45,7 +51,9 @@ export default class Table extends React.Component {
       totalRows: this.state.totalRows,
       pageSize: this.props.pageSize,
       fetch: this.fetch,
-      classes: this.props.classes
+      classes: this.props.classes,
+      dimentions: this.state.dimentions,
+      prefix: this.props.prefix
     };
 
     return context;
@@ -59,8 +67,7 @@ export default class Table extends React.Component {
       loading: true,
       totalRows: props.totalRows,
       dimentions: {
-        height: '100%',
-        width: '100%'
+        height: '100%'
       }
     };
 
@@ -71,8 +78,14 @@ export default class Table extends React.Component {
   componentDidMount() {
     this.fetch();
 
-    //let el = React.findDOMNode(this.refs._table);
-    //console.log(el.parentElement.clientHeight);
+    let el = React.findDOMNode(this);
+    let _head = React.findDOMNode(this.refs._head);
+    let _pagination = React.findDOMNode(this.refs._pagination);
+    let height = el.parentElement.clientHeight - _head.offsetHeight - _pagination.offsetHeight - 10;
+
+    this.setState({
+      dimentions: { height }
+    });
 
   }
 
@@ -98,13 +111,13 @@ export default class Table extends React.Component {
   }
 
   render() {
-    let { classes } = this.props;
+    let { classes, pagination } = this.props;
 
     return (
-      <div>
-        <TableHead/>
+      <div style={{height: '100%'}}>
+        <TableHead ref='_head'/>
         <TableBody/>
-        <Pagination/>
+        { !pagination ? null : <Pagination ref='_pagination'/>}
       </div>
     );
   }

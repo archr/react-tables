@@ -6,7 +6,8 @@ export default class TableBody extends React.Component {
     columns: React.PropTypes.array,
     loading: React.PropTypes.bool,
     rows: React.PropTypes.array,
-    classes: React.PropTypes.string
+    classes: React.PropTypes.string,
+    dimentions: React.PropTypes.object
   }
 
   constructor(props, context) {
@@ -23,16 +24,19 @@ export default class TableBody extends React.Component {
     return (
       <tr key={index}>
         {columns.map(({ Component, formatter, field, title, classes }) => {
+          let style = {};
+          if (!classes) {
+            style.width = parseFloat((100 / columns.length)).toFixed(2) + '%';
+          }
+
           if (Component) {
-            return <td key={title} className={classes || ''}> <Component row={row}/> </td>;
+            return <td key={title} className={classes || ''} style={style}> <Component row={row}/> </td>;
           }
-
           else if (formatter) {
-            return <td key={title} className={classes || '' } dangerouslySetInnerHTML={{__html: formatter(row[field], row)}}></td>;
+            return <td key={title} className={classes || '' } style={style} dangerouslySetInnerHTML={{__html: formatter(row[field], row)}}></td>;
           }
-
           else {
-            return <td key={title} className={classes || ''}>{row[field] || '-'}</td>;
+            return <td key={title} className={classes || ''} style={style}>{row[field] || '-'}</td>;
           }
         })}
       </tr>
@@ -41,26 +45,19 @@ export default class TableBody extends React.Component {
 
 
   render() {
-    let { columns, loading, rows, classes } = this.context;
-
-    if (loading) {
-      return (
-        <table className={classes}>
-          <tbody>
-            <td colSpan={columns.length} style={{textAlign: 'center'}}>
-              Loading...
-            </td>
-          </tbody>
-        </table>
-      );
-    }
+    let { columns, loading, rows, classes, dimentions } = this.context;
 
     return (
-      <table className={classes}>
-        <tbody>
-          {rows.map(this.getTr)}
-        </tbody>
-      </table>
+      <div style={{height: dimentions.height, overflow: 'auto'}}>
+        <table className={classes}>
+          <tbody>
+            { loading
+              ? <td colSpan={columns.length} style={{textAlign: 'center'}}>Loading...</td>
+              : rows.map(this.getTr)
+            }
+          </tbody>
+        </table>
+      </div>
     );
   }
 }
