@@ -39,7 +39,7 @@ export default class Table extends React.Component {
     columns: [],
     getData: noop,
     prefix: 'react-tables',
-    pagination: React.PropTypes.bool
+    pagination: true
   }
 
   getChildContext() {
@@ -67,7 +67,7 @@ export default class Table extends React.Component {
       loading: true,
       totalRows: props.totalRows,
       dimentions: {
-        height: '100%'
+        height: '90%'
       }
     };
 
@@ -77,6 +77,8 @@ export default class Table extends React.Component {
 
   componentDidMount() {
     this.fetch();
+
+    if (!this.props.pagination) return;
 
     let el = React.findDOMNode(this);
     let _head = React.findDOMNode(this.refs._head);
@@ -90,10 +92,14 @@ export default class Table extends React.Component {
   }
 
   fetch(params={}) {
-    let options = {
-      limit: this.props.pageSize,
-      skip: this.props.pageSize * ((params.pageNumber || 1 ) - 1)
-    };
+    let options = {};
+
+    if (this.props.pagination) {
+      options = {
+        limit: this.props.pageSize,
+        skip: this.props.pageSize * ((params.pageNumber || 1 ) - 1)
+      };
+    }
 
     this.setState({
       loading: true

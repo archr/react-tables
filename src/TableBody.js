@@ -46,14 +46,17 @@ export default class TableBody extends React.Component {
 
   render() {
     let { columns, loading, rows, classes, dimentions } = this.context;
-
     return (
       <div style={{height: dimentions.height, overflow: 'auto'}}>
         <table className={classes}>
           <tbody>
             { loading
-              ? <td colSpan={columns.length} style={{textAlign: 'center'}}>Loading...</td>
+              ? <tr><td colSpan={columns.length} style={{textAlign: 'center'}}>Loading...</td></tr>
               : rows.map(this.getTr)
+            }
+
+            { loading || rows.length ? null
+              : <tr><td colSpan={columns.length} style={{textAlign: 'center'}}>No information</td></tr>
             }
           </tbody>
         </table>
